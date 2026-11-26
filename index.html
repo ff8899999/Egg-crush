@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>EGG CRUSH 厚蛋俱樂部 菜單</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@800;900&display=block" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+/* VOICE: loud, hungry, street breakfast poster; short lines, big prices
+   IDEA: the printed menu poster come alive, plus the "crush" (tap a toast and it squishes)
+   PICTURE: real toasts sitting in the white grid takeaway box, bobbing on slanted charcoal panels
+   COLOUR and TYPE: brand lime #eef35b, charcoal #2b2b2b, white box; Unbounded 900 + Noto Sans TC 900
+   LAYOUT: hero wordmark > ticker > four slanted toast panels > drinks and soups > combo calculator */
+:root{color-scheme:light;--y:#eef35b;--k:#2b2b2b;--k2:#3a3a3a;--g:#adadad;--w:#fff;--egg:#ffd84a;--bg:var(--y);--ink:var(--k);
+--en:"Unbounded","Noto Sans TC",system-ui,sans-serif;--tc:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif}
+:root[data-theme=light],:root[data-theme=dark]{color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.55 var(--tc);-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%;height:auto}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+button:focus-visible,a:focus-visible{outline:3px solid var(--k);outline-offset:3px;border-radius:12px}
+.dark button:focus-visible{outline-color:var(--y)}
+main,footer{display:block;overflow-x:clip}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(5vw,16px)}
+
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--y) 92%,transparent);backdrop-filter:blur(8px);border-bottom:2px solid var(--k)}
+.top .wrap{display:flex;align-items:center;gap:12px;min-height:60px}
+.logo{font:900 18px/1 var(--en);letter-spacing:-.02em;color:var(--k);text-decoration:none;white-space:nowrap}
+.top nav{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.top nav a{flex:none;font-weight:700;font-size:15px;color:var(--k);text-decoration:none;padding:10px 14px;border-radius:999px;min-height:44px;display:flex;align-items:center;transition:background .2s,color .2s}
+.top nav a.on{background:var(--k);color:var(--y)}
+@media(max-width:400px){.logo{font-size:14px}.top .wrap{gap:8px}.top nav a{padding:8px 7px;font-size:14px}}
+
+/* hero */
+.hero{padding:clamp(24px,5vw,56px) 0 0;text-align:center;position:relative}
+.mark{font:900 min(150px,calc((100vw - max(10vw,32px)) / 7.4))/1 var(--en);letter-spacing:-.04em;margin:0;display:flex;justify-content:center;flex-wrap:nowrap;column-gap:.22em}
+.mark span{display:inline-block;white-space:nowrap}
+.mark i{display:inline-block;font-style:normal;animation:drop .7s cubic-bezier(.2,1.6,.4,1) both paused;animation-delay:calc(var(--d)*60ms)}
+.fl .mark i{animation-play-state:running}
+.club{font:900 clamp(17px,3vw,28px)/1 var(--tc);letter-spacing:.6em;margin:clamp(10px,1.6vw,18px) 0 0;padding-left:.6em}
+.stage{position:relative;max-width:min(540px,100%);margin:clamp(18px,3vw,36px) auto 0}
+.star{position:absolute;width:clamp(36px,7vw,64px);fill:var(--k);animation:spin 9s linear infinite}
+.star.a{right:2%;top:2%}.star.b{left:-2%;top:12%;width:clamp(22px,4vw,36px);animation-duration:6s;animation-direction:reverse}
+.pitch{background:var(--k);color:var(--w);margin-top:-6px;padding:22px 16px 26px;clip-path:polygon(0 18px,100% 0,100% 100%,0 100%)}
+.pitch p{margin:8px 0 14px;font-weight:700;font-size:clamp(16px,2.4vw,20px)}
+.pitch p b{color:var(--y)}
+.cta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:0 24px;border-radius:999px;font-weight:900;font-size:16px;line-height:1;text-decoration:none;white-space:nowrap;transition:transform .15s}
+.btn:active{transform:scale(.96)}
+.btn.y{background:var(--y);color:var(--k)}
+.btn.o{border:2px solid var(--y);color:var(--y)}
+
+/* toast in a box (shared) */
+.toast{position:relative;cursor:pointer;touch-action:manipulation;transform:perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .25s}
+.toast img{position:relative;z-index:1;width:100%;filter:drop-shadow(0 18px 18px rgba(0,0,0,.35));transform-origin:50% 90%}
+.toast.float img{animation:bob 3.6s ease-in-out infinite}
+.toast.sq img{animation:squish .55s cubic-bezier(.3,1.8,.5,1)}
+.bw{position:relative;z-index:2;margin:-5% -4% 0;container-type:inline-size;filter:drop-shadow(0 14px 12px rgba(0,0,0,.28))}
+.box{position:relative;aspect-ratio:100/23;clip-path:polygon(0 0,100% 0,94% 100%,6% 100%);
+background:linear-gradient(90deg,rgba(0,0,0,.08),#0000 16% 84%,rgba(0,0,0,.1)),
+linear-gradient(#0000 calc(100% - 1px),rgba(0,0,0,.1) 0) 50% 0/7.142% 31%,
+linear-gradient(90deg,#0000 calc(100% - 1px),rgba(0,0,0,.1) 0) 50% 0/7.142% 31%,linear-gradient(#fff,#eeede8)}
+.box::before{content:"";position:absolute;inset:0 0 auto;height:2.2cqw;min-height:3px;background:linear-gradient(#fff,#e7e6e1);border-bottom:1px solid rgba(0,0,0,.08)}
+.box::after{content:"";position:absolute;inset:2.2cqw 0 auto;height:22%;background:linear-gradient(rgba(0,0,0,.12),#0000)}
+.box b{position:absolute;left:50%;top:42%;translate:-50% 0;width:22%;aspect-ratio:1;border-radius:50%;background:#1d1d1d;color:var(--y);font:900 3.3cqw/.92 var(--en);letter-spacing:-.03em;display:block;padding-top:3cqw;text-align:center}
+.bit{position:absolute;z-index:3;width:12px;height:10px;border-radius:50% 45% 55% 40%;background:var(--egg);pointer-events:none;animation:fly .7s ease-out forwards}
+
+/* ticker */
+.tick{background:var(--k);color:var(--y);overflow:hidden;border-block:2px solid var(--k);padding:12px 0}
+.tick div{display:flex;width:max-content;animation:marq 26s linear infinite}
+.tick span{display:flex;align-items:center;gap:18px;padding-right:18px;font:900 15px/1.2 var(--en);letter-spacing:-.01em;white-space:nowrap}
+.tick svg{width:16px;fill:var(--y)}
+
+/* section heads */
+.head{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin:0 0 clamp(20px,3vw,34px)}
+.head h2{font:900 clamp(34px,6vw,52px)/1.05 var(--en);letter-spacing:-.03em;margin:0}
+.head p{margin:0;font-weight:700}
+.band{padding:clamp(40px,6vw,80px) 0}
+
+/* toast cards */
+.cards{display:grid;gap:clamp(48px,7vw,72px);padding-top:clamp(36px,5vw,56px)}
+.card{--sl:clamp(20px,3.4vw,44px);--tl:0px;--tr:0px;--br:0px;--bl:0px;position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:clamp(16px,3vw,40px);padding:calc(clamp(20px,3vw,36px) + var(--sl)) clamp(18px,3vw,44px) calc(clamp(22px,3vw,36px) + var(--sl));color:var(--w);isolation:isolate;opacity:0;translate:var(--from,-40px) 0;transition:opacity .6s,translate .7s cubic-bezier(.2,.9,.3,1)}
+.card:nth-child(even){--from:40px}
+.card.in{opacity:1;translate:0 0}
+.card::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--k);border-radius:24px;clip-path:polygon(0 var(--tl),100% var(--tr),100% calc(100% - var(--br)),0 calc(100% - var(--bl)))}
+.card.t-r{--tl:var(--sl)}.card.t-f{--tr:var(--sl)}.card.b-r{--br:var(--sl)}.card.b-f{--bl:var(--sl)}
+.card:nth-child(even) .vis{order:2}
+.vis{position:relative;margin-top:-56px;width:100%;max-width:500px;justify-self:center}
+.layers{position:absolute;inset:26% 4% 0;display:flex;flex-direction:column;justify-content:center;gap:0;opacity:0;pointer-events:none;transition:opacity .3s,gap .45s cubic-bezier(.2,1.4,.4,1)}
+.card.open .layers{opacity:1;gap:12px}
+.card.open .toast{opacity:0;scale:.85}
+.card .toast{transition:opacity .3s,scale .3s,transform .25s}
+.ly{display:flex;align-items:center;gap:12px}
+.ly i{flex:0 0 58%;border-radius:10px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.ly span{font-weight:700;font-size:14px;color:var(--w);opacity:0;translate:-8px 0;transition:.3s .15s}
+.card.open .ly span{opacity:1;translate:0 0}
+.L-bt{height:30px;border-radius:40px 40px 8px 8px!important;background:linear-gradient(#b5601c,#e39a4f)}
+.L-bb{height:26px;background:linear-gradient(#f3d39f,#d8954c)}
+.L-egg{height:30px;background:radial-gradient(circle at 20% 40%,#ffe98a 0 18%,#0000 19%),radial-gradient(circle at 70% 60%,#ffe98a 0 14%,#0000 15%),var(--egg);border-radius:16px!important}
+.L-mayo{height:10px;background:repeating-linear-gradient(115deg,#fff7e3 0 10px,#e8dcbc 10px 13px)}
+.L-ham{height:14px;background:#f19ea6}
+.L-cheese{height:10px;background:#ffb21c}
+.L-lettuce{height:14px;background:#8cc63f;border-radius:14px 4px 14px 4px!important}
+.L-pork{height:22px;background:repeating-linear-gradient(100deg,#7a3e17 0 14px,#9a5526 14px 22px)}
+.L-beef{height:26px;background:repeating-linear-gradient(80deg,#4f2810 0 5px,#6b3a1c 5px 9px,#3c1d0b 9px 12px)}
+.en{font:800 clamp(13px,1.6vw,17px)/1.2 var(--en);color:var(--g);margin:0 0 6px;letter-spacing:-.01em}
+.card h3{font:900 clamp(30px,4.6vw,48px)/1.08 var(--tc);color:var(--y);margin:0 0 14px;text-wrap:balance}
+.ing{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.ing li{font-size:14px;font-weight:700;padding:6px 12px;border-radius:999px;background:var(--k2);color:#e9e9e9}
+.txt{container-type:inline-size}
+.row{display:flex;align-items:center;gap:10px}
+.price{font:900 clamp(34px,5vw,50px)/1 var(--en);letter-spacing:-.04em;margin-right:14px;white-space:nowrap}
+@container (max-width:400px){.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.price{grid-column:1/-1;margin:0 0 6px}.chip{width:100%}}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:999px;font-weight:900;font-size:15px;line-height:1;white-space:nowrap}
+.chip.peek{border:2px solid #666;color:var(--w)}
+.card.open .chip.peek{background:var(--w);color:var(--k);border-color:var(--w)}
+.chip.add{background:var(--y);color:var(--k)}
+
+/* drinks + soups */
+.sides{display:grid;grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr) minmax(0,1fr);gap:clamp(18px,3vw,36px);align-items:center}
+.cup{position:relative;max-width:240px;justify-self:center}
+.cup img{filter:drop-shadow(0 20px 18px rgba(0,0,0,.25));animation:bob 4.2s ease-in-out infinite;cursor:pointer}
+.list{background:var(--w);border:2px solid var(--k);border-radius:22px;padding:clamp(16px,2.4vw,26px);box-shadow:10px 10px 0 var(--k)}
+.list h3,.soup h3{font:900 clamp(32px,5vw,48px)/1 var(--en);margin:0 0 12px;letter-spacing:-.03em}
+.item{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 8px;border-radius:12px;text-align:left;font-weight:900;font-size:clamp(18px,2.4vw,22px);transition:background .2s}
+.item::after{content:"";order:2;flex:1;border-bottom:2px solid currentColor;opacity:.8}
+.item em{order:3;font:900 clamp(20px,2.6vw,26px)/1 var(--en);font-style:normal;white-space:nowrap}
+.item:hover,.item.on{background:var(--y)}
+.soup{padding:clamp(16px,2.4vw,26px) 4px}
+.soup h3{border-bottom:2px solid var(--k);padding-bottom:12px}
+.hint{font-size:14px;font-weight:700;margin:12px 0 0}
+.deal{margin-top:clamp(24px,4vw,40px);background:var(--k);color:var(--w);border-radius:20px;padding:16px 22px;font-weight:900;font-size:clamp(16px,2.4vw,22px);text-align:center;text-wrap:balance}
+.deal b{color:var(--y)}
+
+/* combo builder */
+.dark{background:var(--k);color:var(--w)}
+.dark .head p{color:#cfcfcf}
+.combo{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(20px,4vw,48px);align-items:start}
+.step h3{font:900 18px/1.3 var(--tc);margin:0 0 12px;color:var(--y)}
+.step+.step{margin-top:26px}
+.opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.opt{display:flex;align-items:center;gap:10px;min-height:64px;padding:8px 12px;border-radius:16px;background:var(--k2);border:2px solid transparent;text-align:left;font-weight:700;font-size:15px;line-height:1.3;transition:border-color .2s,background .2s,transform .15s}
+.opt:active{transform:scale(.97)}
+.opt img{width:52px;flex:none}
+.opt small{display:block;color:var(--g);font:800 13px/1.2 var(--en)}
+.opt.on{border-color:var(--y);background:#454536}
+.opts.s3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opts.s3 .opt{justify-content:center;text-align:center;flex-direction:column;gap:2px;min-height:60px}
+.tray{position:sticky;top:76px;background:var(--y);color:var(--k);border-radius:28px;padding:clamp(18px,3vw,28px);overflow:hidden}
+.plate{display:flex;align-items:flex-end;justify-content:center;gap:10px;min-height:170px;margin:6px 0 22px}
+.plate .toast{width:58%;max-width:240px;transition:none}
+.plate svg{width:28%;max-width:120px;flex:none;overflow:visible}
+.plate .pop{animation:pop .45s cubic-bezier(.2,1.7,.4,1)}
+#liq,#bowlFill{transition:fill .4s}
+.sum{display:grid;gap:4px;font-weight:700;font-size:15px;border-top:2px solid var(--k);padding-top:12px}
+.sum div{display:flex;justify-content:space-between;gap:12px}
+.sum div span:last-child{white-space:nowrap;font-family:var(--en);font-weight:800}
+.save span:last-child{background:var(--k);color:var(--y);padding:2px 10px;border-radius:999px}
+.total{display:flex;align-items:baseline;justify-content:space-between;margin-top:8px}
+.total b{font:900 clamp(44px,8vw,64px)/1 var(--en);letter-spacing:-.05em}
+.copy{margin-top:14px;width:100%;min-height:50px;border-radius:999px;background:var(--k);color:var(--y);font-weight:900}
+.note{font-size:13px;margin:10px 0 0;text-align:center}
+.empty{opacity:.35}
+.mini{display:none}
+
+footer{padding:36px 0 48px;text-align:center}
+footer .logo{font-size:28px;display:block}
+footer p{margin:6px 0 0;font-weight:700;letter-spacing:.4em}
+
+@keyframes drop{from{opacity:0;transform:translateY(-70%) rotate(-12deg)}to{opacity:1;transform:none}}
+@keyframes spin{to{rotate:360deg}}
+@keyframes bob{50%{translate:0 -10px}}
+@keyframes squish{30%{transform:scale(1.12,.78)}60%{transform:scale(.94,1.08)}to{transform:none}}
+@keyframes fly{to{transform:translate(var(--dx),var(--dy)) rotate(200deg) scale(.4);opacity:0}}
+@keyframes marq{to{transform:translateX(-50%)}}
+@keyframes pop{0%{scale:.6;opacity:.2}to{scale:1;opacity:1}}
+
+@media(max-width:860px){
+ .card{grid-template-columns:minmax(0,1fr);padding-top:0}
+ .card:nth-child(even) .vis{order:0}
+ .vis{max-width:480px;width:92%;margin:-40px auto 0}
+ .sides{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .cup{grid-row:span 2;max-width:200px}
+ .combo{grid-template-columns:minmax(0,1fr)}
+ .tray{position:relative;top:0;order:-1}
+ .mini{display:flex;position:sticky;bottom:12px;z-index:5;margin-top:22px;width:100%;min-height:56px;align-items:center;justify-content:space-between;gap:12px;padding:0 20px;border-radius:999px;background:var(--y);color:var(--k);font-weight:900;font-size:15px;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+ .mini{padding:8px 8px 8px 20px}
+ #miniN{display:flex;flex-direction:column;text-align:left;font-size:14px;line-height:1.3}
+ #miniN span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .mini b{background:var(--k);color:var(--y);border-radius:999px;padding:10px 14px}
+ .mini b{font:900 22px/1 var(--en);white-space:nowrap}
+}
+@media(max-width:600px){
+ .top nav a{padding:10px 10px;font-size:14px}
+ .logo{font-size:15px}
+ .sides{grid-template-columns:minmax(0,1fr)}
+ .cup{grid-row:auto;max-width:150px}
+ .opts{grid-template-columns:minmax(0,1fr)}
+ .opts.s3{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .club{letter-spacing:.45em}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.card{opacity:1;translate:0 0}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+ <a class="logo" href="#top">EGG CRUSH</a>
+ <nav aria-label="菜單分類"><a href="#toast">厚吐司</a><a href="#sides">飲料湯品</a><a href="#combo">組套餐</a></nav>
+</div></header>
+
+<main id="top">
+<section class="hero">
+ <div class="wrap">
+  <h1 class="mark" aria-label="EGG CRUSH"><span id="w1"></span><span id="w2"></span></h1>
+  <p class="club">厚蛋俱樂部</p>
+  <div class="stage">
+   <svg class="star a" viewBox="0 0 40 40" aria-hidden="true"><use href="#st"/></svg>
+   <svg class="star b" viewBox="0 0 40 40" aria-hidden="true"><use href="#st"/></svg>
+   <div class="toast float" id="heroToast" role="button" tabindex="0" aria-label="點一下壓壓看火腿起司蛋">
+    <img src="img/ham.webp" alt="火腿起司蛋" width="689" height="405">
+    <div class="bw"><div class="box"><b>EGG<br>CRUSH</b></div></div>
+   </div>
+  </div>
+ </div>
+ <div class="pitch">
+  <p>奶油厚吐司夾嫩炒蛋，一共四種口味<br><b>任選吐司搭配飲料或湯品，套餐折 $10</b></p>
+  <div class="cta"><a class="btn y" href="#toast">看吐司菜單</a><a class="btn o" href="#combo">組套餐算價錢</a></div>
+ </div>
+</section>
+
+<div class="tick" aria-hidden="true"><div id="tick"></div></div>
+
+<section class="band" id="toast">
+ <div class="wrap">
+  <div class="head"><h2>TOAST</h2><p>點吐司圖可以壓壓看，按「拆開看」看夾了什麼</p></div>
+  <div class="cards" id="cards"></div>
+ </div>
+</section>
+
+<section class="band" id="sides" style="padding-top:0">
+ <div class="wrap">
+  <div class="sides">
+   <div class="cup" id="cup"><img src="img/milktea.webp" alt="EGG CRUSH 珍珠奶茶" width="402" height="652"></div>
+   <div class="list"><h3>DRINK</h3><div id="drinks"></div></div>
+   <div class="soup"><h3>SOUP</h3><div id="soups"></div><p class="hint">點品項會直接帶進下方套餐</p></div>
+  </div>
+  <div class="deal">任選吐司搭配飲料或湯品<b>享 10 元折抵</b>套餐優惠</div>
+ </div>
+</section>
+
+<section class="band dark" id="combo">
+ <div class="wrap">
+  <div class="head"><h2 style="color:var(--y)">COMBO</h2><p>選一份吐司，再配一杯飲料或一碗湯，價錢馬上算給你看</p></div>
+  <div class="combo">
+   <div>
+    <div class="step"><h3>第一步　選吐司</h3><div class="opts" id="pickT"></div></div>
+    <div class="step"><h3>第二步　配飲料或湯品</h3><div class="opts s3" id="pickS"></div></div>
+    <button class="mini" id="mini" aria-label="回到套餐合計"><span id="miniN"></span><b id="miniT"></b></button>
+   </div>
+   <div class="tray" aria-live="polite">
+    <div class="plate">
+     <div class="toast" id="trayToast"><img id="trayImg" src="img/beef.webp" alt="" width="720" height="478"><div class="bw"><div class="box"><b>EGG<br>CRUSH</b></div></div></div>
+     <svg id="cupSvg" viewBox="0 0 100 150" aria-hidden="true">
+      <path d="M14 30h72l-9 112a8 8 0 0 1-8 7H31a8 8 0 0 1-8-7z" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+      <path id="liq" d="M20 52h60l-7 88a5 5 0 0 1-5 4H32a5 5 0 0 1-5-4z" fill="#d9b48a"/>
+      <g id="pearls" fill="#2a1a12"><circle cx="38" cy="132" r="5"/><circle cx="50" cy="136" r="5"/><circle cx="62" cy="131" r="5"/><circle cx="44" cy="124" r="5"/><circle cx="57" cy="122" r="5"/></g>
+      <rect x="8" y="22" width="84" height="12" rx="6" fill="#2b2b2b"/>
+     </svg>
+     <svg id="bowlSvg" viewBox="0 0 120 100" aria-hidden="true" style="display:none">
+      <ellipse cx="60" cy="40" rx="52" ry="12" id="bowlFill" fill="#ffd54a"/>
+      <path d="M6 40h108c0 30-24 50-54 50S6 70 6 40z" fill="#fff" stroke="#2b2b2b" stroke-width="4"/>
+      <path d="M44 30c-4-8 4-12 0-20M62 30c-4-8 4-12 0-20M80 30c-4-8 4-12 0-20" stroke="#2b2b2b" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>
+     </svg>
+    </div>
+    <div class="sum">
+     <div><span id="nT">吐司</span><span id="pT">$0</span></div>
+     <div id="rowS"><span id="nS">飲料或湯品</span><span id="pS">$0</span></div>
+     <div class="save" id="rowD"><span>套餐折抵</span><span>−$10</span></div>
+    </div>
+    <div class="total"><span style="font-weight:900">合計</span><b id="tot">$0</b></div>
+    <button class="copy" id="copy">複製這份餐點</button>
+    <p class="note" id="copied">複製後可以貼給朋友或一起揪團點</p>
+   </div>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer><a class="logo" href="#top">EGG CRUSH</a><p>厚蛋俱樂部</p></footer>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="st" viewBox="0 0 40 40"><path d="M20 0c1.6 10.4 9.6 18.4 20 20-10.4 1.6-18.4 9.6-20 20-1.6-10.4-9.6-18.4-20-20C10.4 18.4 18.4 10.4 20 0z"/></symbol></svg>
+
+<script>
+{
+const T=[
+ {id:'classic',en:'CLASSIC CHEESE',n:'奶油嫩蛋起司',p:119,ing:['奶油厚吐司','嫩炒蛋','招牌美乃滋'],L:[['bt','奶油厚吐司'],['mayo','招牌美乃滋'],['egg','嫩炒蛋'],['bb','奶油厚吐司']]},
+ {id:'ham',en:'HAM & CHEESE',n:'火腿起司蛋',p:149,ing:['奶油厚吐司','火腿','融化起司','嫩炒蛋'],L:[['bt','奶油厚吐司'],['ham','火腿'],['egg','嫩炒蛋'],['cheese','融化起司'],['bb','奶油厚吐司']]},
+ {id:'teriyaki',en:'TERIYAKI PORK',n:'日式照燒豬肉',p:159,ing:['奶油厚吐司','日式照燒豬肉','嫩炒蛋','生菜'],L:[['bt','奶油厚吐司'],['lettuce','生菜'],['pork','日式照燒豬肉'],['egg','嫩炒蛋'],['bb','奶油厚吐司']]},
+ {id:'beef',en:'SIGNATURE PULLED BEEF',n:'招牌手撕牛蛋吐司',p:179,ing:['奶油厚吐司','手撕牛肉','嫩炒蛋'],L:[['bt','奶油厚吐司'],['beef','手撕牛肉'],['egg','嫩炒蛋'],['bb','奶油厚吐司']]}
+];
+const D=[{id:'bmt',n:'珍珠奶茶',p:65,c:'#d9b48a',pearl:1},{id:'mt',n:'奶茶',p:55,c:'#e2c3a0'},{id:'bt',n:'紅茶',p:40,c:'#b5521b'},{id:'gt',n:'綠茶',p:40,c:'#d8c85a'}];
+const S=[{id:'corn',n:'玉米濃湯',p:99,c:'#ffd54a',soup:1},{id:'daily',n:'精選湯品',p:99,c:'#c98a4b',soup:1}];
+const SIDES=[...D,...S];
+const $=s=>document.querySelector(s);
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// wordmark letters: start the drop once the poster font is in
+const ready=()=>document.documentElement.classList.add('fl');
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(ready);setTimeout(ready,2500);
+const fill=(el,w,o)=>el.innerHTML=[...w].map((c,i)=>`<i style="--d:${i+o}" aria-hidden="true">${c}</i>`).join('');
+fill($('#w1'),'EGG',0);fill($('#w2'),'CRUSH',3);
+
+// ticker
+const tk=['奶油嫩蛋起司 $119','火腿起司蛋 $149','日式照燒豬肉 $159','招牌手撕牛蛋吐司 $179','套餐折 $10','珍珠奶茶 $65','玉米濃湯 $99'];
+const st='<svg viewBox="0 0 40 40"><use href="#st"/></svg>';
+const one=tk.map(t=>`<span>${t}${st}</span>`).join('');
+$('#tick').innerHTML=one+one;
+
+// cards
+$('#cards').innerHTML=T.map((t,i)=>`
+<article class="card ${i===0||i%2===1?'t-r':(i%2===0?'t-f':'t-r')} ${i%2===0?'b-r':'b-f'}" data-i="${i}">
+ <div class="vis">
+  <div class="toast" role="button" tabindex="0" aria-label="壓壓看${t.n}"><img src="img/${t.id}.webp" alt="${t.n}" loading="lazy"><div class="bw"><div class="box"><b>EGG<br>CRUSH</b></div></div></div>
+  <div class="layers" aria-hidden="true">${t.L.map(([k,n])=>`<div class="ly"><i class="L-${k}"></i><span>${n}</span></div>`).join('')}</div>
+ </div>
+ <div class="txt">
+  <p class="en">${t.en}</p><h3>${t.n}</h3>
+  <ul class="ing">${t.ing.map(x=>`<li>${x}</li>`).join('')}</ul>
+  <div class="row"><b class="price">$${t.p}</b><button class="chip peek" aria-pressed="false">拆開看</button><button class="chip add">組套餐</button></div>
+ </div>
+</article>`).join('');
+
+// squish + egg bits
+function crush(el){
+ if(reduce)return;
+ el.classList.remove('sq');void el.offsetWidth;el.classList.add('sq');
+ const r=el.getBoundingClientRect();
+ for(let k=0;k<8;k++){
+  const b=document.createElement('span');b.className='bit';
+  const a=Math.PI*(1.05+k/8*0.9);
+  b.style.left=(r.width*(.3+Math.random()*.4))+'px';b.style.top=(r.height*.45)+'px';
+  b.style.setProperty('--dx',Math.cos(a)*(60+Math.random()*60)+'px');
+  b.style.setProperty('--dy',Math.sin(a)*(50+Math.random()*50)+'px');
+  el.appendChild(b);setTimeout(()=>b.remove(),750);
+ }
+}
+document.addEventListener('click',e=>{const t=e.target.closest('.toast[role=button]');if(t)crush(t)});
+document.addEventListener('keydown',e=>{const t=e.target.closest&&e.target.closest('.toast[role=button]');if(t&&(e.key==='Enter'||e.key===' ')){e.preventDefault();crush(t)}});
+
+// tilt on desktop pointers
+if(matchMedia('(hover:hover)').matches&&!reduce){
+ document.querySelectorAll('.vis,.stage').forEach(v=>{
+  const t=v.querySelector('.toast');
+  v.addEventListener('pointermove',e=>{const r=v.getBoundingClientRect();t.style.setProperty('--ry',((e.clientX-r.left)/r.width-.5)*14+'deg');t.style.setProperty('--rx',(.5-(e.clientY-r.top)/r.height)*10+'deg')});
+  v.addEventListener('pointerleave',()=>{t.style.setProperty('--ry','0deg');t.style.setProperty('--rx','0deg')});
+ });
+}
+
+// card buttons
+$('#cards').addEventListener('click',e=>{
+ const c=e.target.closest('.card');if(!c)return;
+ if(e.target.closest('.peek')){const o=c.classList.toggle('open');e.target.setAttribute('aria-pressed',o);e.target.textContent=o?'看原圖':'拆開看'}
+ if(e.target.closest('.add')){pick.t=+c.dataset.i;render(true,false);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})}
+});
+
+// reveal on scroll
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in');io.unobserve(x.target)}}),{threshold:.18});
+document.querySelectorAll('.card').forEach(c=>io.observe(c));
+
+// drinks + soups lists
+const row=s=>`<button class="item" data-s="${s.id}">${s.n}<em>$${s.p}</em></button>`;
+$('#drinks').innerHTML=D.map(row).join('');
+$('#soups').innerHTML=S.map(row).join('');
+document.querySelectorAll('.item').forEach(b=>b.addEventListener('click',()=>{pick.s=b.dataset.s;render(false,true);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})}));
+
+// tap the cup to pick it
+const cup=$('#cup');
+cup.querySelector('img').addEventListener('click',()=>{pick.s='bmt';render(false,true);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})});
+
+// combo builder
+const pick={t:3,s:'bmt'};
+$('#pickT').innerHTML=T.map((t,i)=>`<button class="opt" data-t="${i}"><img src="img/${t.id}.webp" alt=""><span>${t.n}<small>$${t.p}</small></span></button>`).join('');
+$('#pickS').innerHTML=SIDES.map(s=>`<button class="opt" data-s="${s.id}">${s.n}<small>$${s.p}</small></button>`).join('')+`<button class="opt" data-s="">只要吐司<small>$0</small></button>`;
+$('#pickT').addEventListener('click',e=>{const b=e.target.closest('.opt');if(b){pick.t=+b.dataset.t;render(true,false)}});
+$('#pickS').addEventListener('click',e=>{const b=e.target.closest('.opt');if(b){pick.s=b.dataset.s;render(false,true)}});
+
+let shown=0,raf;
+function count(to){
+ cancelAnimationFrame(raf);
+ if(reduce){$('#tot').textContent='$'+to;shown=to;return}
+ const from=shown,t0=performance.now();
+ const step=n=>{const k=Math.min(1,(n-t0)/450),v=Math.round(from+(to-from)*(1-(1-k)**3));$('#tot').textContent='$'+v;if(k<1)raf=requestAnimationFrame(step);else shown=to};
+ raf=requestAnimationFrame(step);
+}
+function bump(el){if(reduce)return;el.classList.remove('pop');void el.getBoundingClientRect();el.classList.add('pop')}
+function render(tc,sc){
+ const t=T[pick.t],s=SIDES.find(x=>x.id===pick.s);
+ document.querySelectorAll('#pickT .opt').forEach(b=>b.classList.toggle('on',+b.dataset.t===pick.t));
+ document.querySelectorAll('#pickS .opt').forEach(b=>b.classList.toggle('on',b.dataset.s===(pick.s||'')));
+ document.querySelectorAll('.item').forEach(b=>b.classList.toggle('on',b.dataset.s===pick.s));
+ $('#trayImg').src=`img/${t.id}.webp`;$('#trayImg').alt=t.n;
+ $('#nT').textContent=t.n;$('#pT').textContent='$'+t.p;
+ const cs=$('#cupSvg'),bw=$('#bowlSvg');
+ cs.style.display=s&&!s.soup?'':'none';bw.style.display=s&&s.soup?'':'none';
+ $('#rowS').classList.toggle('empty',!s);$('#rowD').style.display=s?'':'none';
+ if(s){$('#nS').textContent=s.n;$('#pS').textContent='$'+s.p;
+  if(s.soup)$('#bowlFill').setAttribute('fill',s.c);else{$('#liq').setAttribute('fill',s.c);$('#pearls').style.display=s.pearl?'':'none'}}
+ else{$('#nS').textContent='沒有加飲料或湯品';$('#pS').textContent='$0'}
+ if(tc)bump($('#trayToast'));if(sc&&s)bump(s.soup?bw:cs);
+ const sum=t.p+(s?s.p-10:0);count(sum);
+ const mn=$('#miniN');mn.textContent='';[t.n,s?'＋ '+s.n:''].filter(Boolean).forEach(x=>{const e=document.createElement('span');e.textContent=x;mn.append(e)});$('#miniT').textContent='$'+sum;
+ $('#copied').textContent='複製後可以貼給朋友或一起揪團點';
+}
+render(false,false);
+
+$('#copy').addEventListener('click',async()=>{
+ const t=T[pick.t],s=SIDES.find(x=>x.id===pick.s);
+ const txt=`EGG CRUSH 厚蛋俱樂部｜${t.n}${s?' ＋ '+s.n+'（套餐折 $10）':''}　共 $${t.p+(s?s.p-10:0)}`;
+ try{await navigator.clipboard.writeText(txt);$('#copied').textContent='已複製：'+txt}
+ catch(err){$('#copied').textContent=txt}
+});
+
+// active nav link
+$('#mini').addEventListener('click',()=>document.querySelector('.tray').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}));
+const links=[...document.querySelectorAll('.top nav a')];
+const so=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+x.target.id))}),{rootMargin:'-45% 0px -50% 0px'});
+['toast','sides','combo'].forEach(id=>so.observe(document.getElementById(id)));
+}
+</script>
+</body>
+</html>

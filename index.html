@@ -521,10 +521,16 @@ render(false,false);
 // ---------- cart ----------
 const ALL=[...T.map(x=>({...x,k:'t'})),...SIDES.map(x=>({...x,k:'s'}))];
 const BY=Object.fromEntries(ALL.map(x=>[x.id,x]));
-const KEY='eggcrush-cart-v1';
+// each phone keeps its own cart; an idle cart (30 min) starts over empty
+const KEY='eggcrush-cart-v2',TTL=30*60*1000;
 let cart={};
-try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');for(const k in v)if(BY[k]&&v[k]>0)cart[k]=Math.min(99,v[k]|0)}catch(e){}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(cart))}catch(e){}};
+try{
+ localStorage.removeItem('eggcrush-cart-v1');
+ const v=JSON.parse(localStorage.getItem(KEY)||'null');
+ if(v&&v.items&&Date.now()-v.at<TTL){for(const k in v.items)if(BY[k]&&v.items[k]>0)cart[k]=Math.min(99,v.items[k]|0)}
+ else localStorage.removeItem(KEY);
+}catch(e){}
+const save=()=>{try{Object.keys(cart).length?localStorage.setItem(KEY,JSON.stringify({at:Date.now(),items:cart})):localStorage.removeItem(KEY)}catch(e){}};
 const money=n=>'$'+n.toLocaleString('en-US');
 function calc(){
  const lines=ALL.filter(x=>cart[x.id]>0).map(x=>({...x,q:cart[x.id],sum:x.p*cart[x.id]}));

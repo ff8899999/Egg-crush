@@ -127,10 +127,13 @@ linear-gradient(90deg,#0000 calc(100% - 1px),rgba(0,0,0,.1) 0) 50% 0/7.142% 31%,
 .cup img{filter:drop-shadow(0 20px 18px rgba(0,0,0,.25));animation:bob 4.2s ease-in-out infinite;cursor:pointer}
 .list{background:var(--w);border:2px solid var(--k);border-radius:22px;padding:clamp(16px,2.4vw,26px);box-shadow:10px 10px 0 var(--k)}
 .list h3,.soup h3{font:900 clamp(32px,5vw,48px)/1 var(--en);margin:0 0 12px;letter-spacing:-.03em}
-.item{display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 8px;border-radius:12px;text-align:left;font-weight:900;font-size:clamp(18px,2.4vw,22px);transition:background .2s}
-.item::after{content:"";order:2;flex:1;border-bottom:2px solid currentColor;opacity:.8}
+.item{display:flex;align-items:center;gap:10px;width:100%;min-height:58px;padding:6px 6px 6px 10px;border-radius:14px;font-weight:900;font-size:clamp(18px,2.4vw,22px);transition:background .2s}
+.item .nm{order:1;white-space:nowrap}
+.item::after{content:"";order:2;flex:1;min-width:8px;border-bottom:2px solid currentColor;opacity:.8}
 .item em{order:3;font:900 clamp(20px,2.6vw,26px)/1 var(--en);font-style:normal;white-space:nowrap}
-.item:hover,.item.on{background:var(--y)}
+.item .buy{order:4;flex:none}
+.item.on{background:var(--y)}
+.soup .item.on{background:var(--w)}
 .soup{padding:clamp(16px,2.4vw,26px) 4px}
 .soup h3{border-bottom:2px solid var(--k);padding-bottom:12px}
 .hint{font-size:14px;font-weight:700;margin:12px 0 0}
@@ -163,7 +166,95 @@ linear-gradient(90deg,#0000 calc(100% - 1px),rgba(0,0,0,.1) 0) 50% 0/7.142% 31%,
 .save span:last-child{background:var(--k);color:var(--y);padding:2px 10px;border-radius:999px}
 .total{display:flex;align-items:baseline;justify-content:space-between;margin-top:8px}
 .total b{font:900 clamp(44px,8vw,64px)/1 var(--en);letter-spacing:-.05em}
-.copy{margin-top:14px;width:100%;min-height:50px;border-radius:999px;background:var(--k);color:var(--y);font-weight:900}
+.copy{margin-top:14px;width:100%;min-height:52px;border-radius:999px;background:var(--k);color:var(--y);font-weight:900;font-size:16px}
+
+/* buy controls */
+.buy>*{width:100%}
+.qs{display:inline-flex;align-items:center;justify-content:space-between;gap:4px;min-height:50px;min-width:136px;padding:3px;border-radius:999px;background:var(--y);color:var(--k)}
+.qs button{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font:900 22px/1 var(--en);transition:background .15s}
+.qs button:active{background:rgba(0,0,0,.12)}
+.qs span{min-width:2.2ch;text-align:center;font:900 18px/1 var(--en)}
+.plus{flex:none;width:46px!important;height:46px;border-radius:50%;background:var(--k);color:var(--y);display:grid;place-items:center;font:900 24px/1 var(--en);transition:transform .15s}
+.plus:active{transform:scale(.9)}
+.item .qs{background:var(--k);color:var(--y);min-width:0;min-height:46px}
+.pline .qs{min-height:46px}
+.item .qs button{width:40px;height:40px}
+.item .buy>.qs{width:auto}
+.card .chip.add{background:var(--y);color:var(--k)}
+
+/* cart bar */
+.cartbar{position:fixed;z-index:40;left:50%;translate:-50% 0;bottom:max(12px,env(safe-area-inset-bottom));width:min(560px,calc(100% - 24px));min-height:64px;display:flex;align-items:center;gap:12px;padding:8px 8px 8px 16px;border-radius:999px;background:var(--k);color:var(--w);box-shadow:0 12px 30px rgba(0,0,0,.35),0 0 0 2px var(--y);text-align:left;animation:barin .45s cubic-bezier(.2,1.4,.4,1)}
+.cartbar[hidden]{display:none}
+.cartbar .ci{position:relative;flex:none;width:30px;height:30px}
+.cartbar .ci svg{width:100%;height:100%;fill:none;stroke:var(--y);stroke-width:2.2;stroke-linejoin:round}
+.cartbar .ci i{position:absolute;right:-8px;top:-6px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:var(--y);color:var(--k);font:900 12px/20px var(--en);font-style:normal;text-align:center}
+.cartbar .cl{flex:1;font-weight:900;font-size:15px;line-height:1.25;overflow:hidden}
+.cartbar .cl small{display:block;color:var(--y);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cartbar b{font:900 22px/1 var(--en);letter-spacing:-.03em;white-space:nowrap}
+.cartbar .go{flex:none;min-height:48px;padding:0 18px;border-radius:999px;background:var(--y);color:var(--k);font-weight:900;display:grid;place-items:center}
+.cartbar.pop{animation:cbump .4s cubic-bezier(.3,1.8,.5,1)}
+html.has-cart body{padding-bottom:92px}
+html.has-cart .mini{bottom:88px}
+.fly{position:fixed;z-index:60;width:22px;height:18px;margin:-9px 0 0 -11px;border-radius:50% 45% 55% 40%;background:var(--egg);box-shadow:0 0 0 3px var(--k);pointer-events:none}
+
+/* cart sheet */
+.sheet{position:fixed;inset:0;z-index:50;display:flex;justify-content:center;align-items:flex-end}
+.sheet[hidden]{display:none}
+.scrim{position:absolute;inset:0;background:rgba(20,20,20,.55);animation:fade .25s}
+.panel{position:relative;width:min(560px,100%);max-height:min(90dvh,860px);display:flex;flex-direction:column;background:var(--k);color:var(--w);border-radius:26px 26px 0 0;animation:up .35s cubic-bezier(.2,.9,.3,1);padding-bottom:env(safe-area-inset-bottom)}
+.ph{display:flex;align-items:center;gap:12px;padding:18px 16px 12px 22px;border-bottom:1px solid #444}
+.ph h2{margin:0;flex:1;font:900 24px/1.2 var(--tc)}
+.ph h2 small{font:800 13px/1 var(--en);color:var(--g);margin-left:8px}
+.x{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:var(--k2)}
+.x svg{width:18px;stroke:var(--w);stroke-width:2.6;stroke-linecap:round}
+.pbody{flex:1;overflow:auto;overscroll-behavior:contain;padding:8px 22px 18px}
+.pf{display:flex;gap:10px;padding:14px 22px 18px;border-top:1px solid #444}
+.pf .btn{flex:1}
+.pf .btn.y{flex:2}
+.pline{display:grid;grid-template-columns:60px minmax(0,1fr) auto;gap:6px 14px;align-items:center;padding:14px 0;border-bottom:1px solid #3d3d3d}
+.pline .th{grid-row:span 2;width:60px;height:60px;display:grid;place-items:center;border-radius:14px;background:var(--k2)}
+.pline .th img{width:54px}.pline .th svg{width:30px}
+.pline .ln{font-weight:900;font-size:16px;line-height:1.3}
+.pline .ln small{display:block;color:var(--g);font:800 13px/1.3 var(--en)}
+.pline .lt{font:900 18px/1 var(--en);white-space:nowrap}
+.pline .buy{grid-column:2/4;justify-self:start}
+.pline .qs{min-width:132px}
+.bill{display:grid;gap:8px;margin-top:16px;font-weight:700}
+.bill div{display:flex;justify-content:space-between;gap:12px}
+.bill div span:last-child{font:800 16px/1.3 var(--en);white-space:nowrap}
+.bill .dc span:last-child{color:var(--y)}
+.bill .tt{align-items:baseline;border-top:2px solid var(--y);padding-top:12px;margin-top:4px}
+.bill .tt span:first-child{font-weight:900;font-size:18px}
+.bill .tt span:last-child{font:900 40px/1 var(--en);letter-spacing:-.04em;color:var(--y)}
+.nudge{margin-top:16px;padding:12px 14px;border-radius:16px;background:#3b3b2a;color:var(--y);font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.nudge a{flex:none;color:var(--k);background:var(--y);border-radius:999px;padding:10px 14px;font-weight:900;text-decoration:none;font-size:14px}
+.empty-c{text-align:center;padding:28px 0 10px}
+.empty-c .bw{width:180px;margin:0 auto 18px;filter:none}
+.empty-c p{font-weight:900;font-size:18px;margin:0 0 6px}
+.empty-c small{color:#cfcfcf;font-size:15px}
+.pay h3{font:900 28px/1.2 var(--tc);margin:10px 0 14px;color:var(--y)}
+.where{display:flex;gap:14px;align-items:center;background:var(--y);color:var(--k);border-radius:20px;padding:16px 18px}
+.where svg{flex:none;width:34px;fill:var(--k)}
+.where b{display:block;font:900 24px/1.2 var(--tc)}
+.where span{font-weight:700;font-size:15px}
+.steps{margin:16px 0 0;padding:0;list-style:none;display:grid;gap:8px;counter-reset:s}
+.steps li{display:flex;gap:10px;align-items:baseline;font-weight:700;font-size:16px}
+.steps li::before{counter-increment:s;content:counter(s);flex:none;width:26px;height:26px;border-radius:50%;background:var(--k2);color:var(--y);font:900 13px/26px var(--en);text-align:center}
+.receipt{margin-top:18px;padding:18px;border-radius:18px;color:var(--k);background:linear-gradient(#0000 calc(100% - 1px),rgba(0,0,0,.07) 0) 0 0/22px 22px,linear-gradient(90deg,#0000 calc(100% - 1px),rgba(0,0,0,.07) 0) 0 0/22px 22px,#fff}
+.receipt h4{margin:0 0 10px;font:900 16px/1 var(--en);letter-spacing:-.02em}
+.receipt div{display:flex;justify-content:space-between;gap:12px;font-weight:900;font-size:17px;padding:5px 0}
+.receipt div span:last-child{font-family:var(--en);font-weight:800;white-space:nowrap}
+.receipt .rt{border-top:2px dashed var(--k);margin-top:8px;padding-top:12px;align-items:baseline}
+.receipt .rt span:last-child{font:900 34px/1 var(--en);letter-spacing:-.04em}
+.fine{color:#cfcfcf;font-size:13px;margin:14px 0 0;line-height:1.5}
+html.lock{overflow:hidden}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@keyframes barin{from{translate:-50% 140%}}
+@keyframes cbump{40%{scale:1.05}}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{translate:0 100%}}
+@keyframes left{from{translate:100% 0}}
+@media(min-width:861px){.sheet{justify-content:flex-end;align-items:stretch}.panel{width:460px;max-height:none;height:100%;border-radius:26px 0 0 26px;animation-name:left}}
 .note{font-size:13px;margin:10px 0 0;text-align:center}
 .empty{opacity:.35}
 .mini{display:none}
@@ -247,7 +338,7 @@ footer p{margin:6px 0 0;font-weight:700;letter-spacing:.4em}
   <div class="sides">
    <div class="cup" id="cup"><img src="img/milktea.webp" alt="EGG CRUSH 珍珠奶茶" width="402" height="652"></div>
    <div class="list"><h3>DRINK</h3><div id="drinks"></div></div>
-   <div class="soup"><h3>SOUP</h3><div id="soups"></div><p class="hint">點品項會直接帶進下方套餐</p></div>
+   <div class="soup"><h3>SOUP</h3><div id="soups"></div><p class="hint">按 + 直接加入購物車，吐司配飲料或湯品會自動折 $10</p></div>
   </div>
   <div class="deal">任選吐司搭配飲料或湯品<b>享 10 元折抵</b>套餐優惠</div>
  </div>
@@ -255,7 +346,7 @@ footer p{margin:6px 0 0;font-weight:700;letter-spacing:.4em}
 
 <section class="band dark" id="combo">
  <div class="wrap">
-  <div class="head"><h2 style="color:var(--y)">COMBO</h2><p>選一份吐司，再配一杯飲料或一碗湯，價錢馬上算給你看</p></div>
+  <div class="head"><h2 style="color:var(--y)">COMBO</h2><p>選一份吐司，再配一杯飲料或一碗湯，一鍵加入購物車</p></div>
   <div class="combo">
    <div>
     <div class="step"><h3>第一步　選吐司</h3><div class="opts" id="pickT"></div></div>
@@ -283,8 +374,8 @@ footer p{margin:6px 0 0;font-weight:700;letter-spacing:.4em}
      <div class="save" id="rowD"><span>套餐折抵</span><span>−$10</span></div>
     </div>
     <div class="total"><span style="font-weight:900">合計</span><b id="tot">$0</b></div>
-    <button class="copy" id="copy">複製這份餐點</button>
-    <p class="note" id="copied">複製後可以貼給朋友或一起揪團點</p>
+    <button class="copy" id="comboAdd">這組加入購物車</button>
+    <p class="note" id="comboNote">加入後可以繼續點，結帳時一起算</p>
    </div>
   </div>
  </div>
@@ -292,6 +383,22 @@ footer p{margin:6px 0 0;font-weight:700;letter-spacing:.4em}
 </main>
 
 <footer><a class="logo" href="#top">EGG CRUSH</a><p>厚蛋俱樂部</p></footer>
+
+<button class="cartbar" id="cartbar" hidden aria-haspopup="dialog">
+ <span class="ci" id="cbIcon"><svg viewBox="0 0 30 30" aria-hidden="true"><path d="M6 10h18l-1.6 15.2a2 2 0 0 1-2 1.8H9.6a2 2 0 0 1-2-1.8z"/><path d="M10.5 12V8.5a4.5 4.5 0 0 1 9 0V12"/></svg><i id="cbN">0</i></span>
+ <span class="cl">購物車<small id="cbS"></small></span>
+ <b id="cbT">$0</b><span class="go">查看</span>
+</button>
+<p class="sr" aria-live="polite" id="live"></p>
+
+<div class="sheet" id="sheet" hidden>
+ <div class="scrim" data-close></div>
+ <section class="panel" role="dialog" aria-modal="true" aria-labelledby="shH">
+  <header class="ph"><h2 id="shH">購物車</h2><button class="x" data-close aria-label="關閉"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16"/></svg></button></header>
+  <div class="pbody" id="pbody"></div>
+  <div class="pf" id="pfoot"></div>
+ </section>
+</div>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="st" viewBox="0 0 40 40"><path d="M20 0c1.6 10.4 9.6 18.4 20 20-10.4 1.6-18.4 9.6-20 20-1.6-10.4-9.6-18.4-20-20C10.4 18.4 18.4 10.4 20 0z"/></symbol></svg>
 
@@ -331,7 +438,7 @@ $('#cards').innerHTML=T.map((t,i)=>`
  <div class="txt">
   <p class="en">${t.en}</p><h3>${t.n}</h3>
   <ul class="ing">${t.ing.map(x=>`<li>${x}</li>`).join('')}</ul>
-  <div class="row"><b class="price">$${t.p}</b><button class="chip peek" aria-pressed="false">拆開看</button><button class="chip add">組套餐</button></div>
+  <div class="row"><b class="price">$${t.p}</b><button class="chip peek" aria-pressed="false">拆開看</button><div class="buy" data-id="${t.id}"></div></div>
  </div>
 </article>`).join('');
 
@@ -365,7 +472,6 @@ if(matchMedia('(hover:hover)').matches&&!reduce){
 $('#cards').addEventListener('click',e=>{
  const c=e.target.closest('.card');if(!c)return;
  if(e.target.closest('.peek')){const o=c.classList.toggle('open');e.target.setAttribute('aria-pressed',o);e.target.textContent=o?'看原圖':'拆開看'}
- if(e.target.closest('.add')){pick.t=+c.dataset.i;render(true,false);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})}
 });
 
 // reveal on scroll
@@ -373,14 +479,9 @@ const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.targ
 document.querySelectorAll('.card').forEach(c=>io.observe(c));
 
 // drinks + soups lists
-const row=s=>`<button class="item" data-s="${s.id}">${s.n}<em>$${s.p}</em></button>`;
+const row=s=>`<div class="item" data-item="${s.id}"><span class="nm">${s.n}</span><em>$${s.p}</em><div class="buy" data-id="${s.id}"></div></div>`;
 $('#drinks').innerHTML=D.map(row).join('');
 $('#soups').innerHTML=S.map(row).join('');
-document.querySelectorAll('.item').forEach(b=>b.addEventListener('click',()=>{pick.s=b.dataset.s;render(false,true);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})}));
-
-// tap the cup to pick it
-const cup=$('#cup');
-cup.querySelector('img').addEventListener('click',()=>{pick.s='bmt';render(false,true);$('#combo').scrollIntoView({behavior:reduce?'auto':'smooth'})});
 
 // combo builder
 const pick={t:3,s:'bmt'};
@@ -402,7 +503,6 @@ function render(tc,sc){
  const t=T[pick.t],s=SIDES.find(x=>x.id===pick.s);
  document.querySelectorAll('#pickT .opt').forEach(b=>b.classList.toggle('on',+b.dataset.t===pick.t));
  document.querySelectorAll('#pickS .opt').forEach(b=>b.classList.toggle('on',b.dataset.s===(pick.s||'')));
- document.querySelectorAll('.item').forEach(b=>b.classList.toggle('on',b.dataset.s===pick.s));
  $('#trayImg').src=`img/${t.id}.webp`;$('#trayImg').alt=t.n;
  $('#nT').textContent=t.n;$('#pT').textContent='$'+t.p;
  const cs=$('#cupSvg'),bw=$('#bowlSvg');
@@ -414,16 +514,126 @@ function render(tc,sc){
  if(tc)bump($('#trayToast'));if(sc&&s)bump(s.soup?bw:cs);
  const sum=t.p+(s?s.p-10:0);count(sum);
  const mn=$('#miniN');mn.textContent='';[t.n,s?'＋ '+s.n:''].filter(Boolean).forEach(x=>{const e=document.createElement('span');e.textContent=x;mn.append(e)});$('#miniT').textContent='$'+sum;
- $('#copied').textContent='複製後可以貼給朋友或一起揪團點';
+ $('#comboNote').textContent='加入後可以繼續點，結帳時一起算';
 }
 render(false,false);
 
-$('#copy').addEventListener('click',async()=>{
- const t=T[pick.t],s=SIDES.find(x=>x.id===pick.s);
- const txt=`EGG CRUSH 厚蛋俱樂部｜${t.n}${s?' ＋ '+s.n+'（套餐折 $10）':''}　共 $${t.p+(s?s.p-10:0)}`;
- try{await navigator.clipboard.writeText(txt);$('#copied').textContent='已複製：'+txt}
- catch(err){$('#copied').textContent=txt}
+// ---------- cart ----------
+const ALL=[...T.map(x=>({...x,k:'t'})),...SIDES.map(x=>({...x,k:'s'}))];
+const BY=Object.fromEntries(ALL.map(x=>[x.id,x]));
+const KEY='eggcrush-cart-v1';
+let cart={};
+try{const v=JSON.parse(localStorage.getItem(KEY)||'{}');for(const k in v)if(BY[k]&&v[k]>0)cart[k]=Math.min(99,v[k]|0)}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(cart))}catch(e){}};
+const money=n=>'$'+n.toLocaleString('en-US');
+function calc(){
+ const lines=ALL.filter(x=>cart[x.id]>0).map(x=>({...x,q:cart[x.id],sum:x.p*cart[x.id]}));
+ const sub=lines.reduce((a,l)=>a+l.sum,0);
+ const nt=lines.filter(l=>l.k==='t').reduce((a,l)=>a+l.q,0),ns=lines.filter(l=>l.k==='s').reduce((a,l)=>a+l.q,0);
+ const pairs=Math.min(nt,ns);
+ return {lines,sub,nt,ns,pairs,disc:pairs*10,total:sub-pairs*10,count:nt+ns};
+}
+const buyHTML=(id,small)=>{const q=cart[id]||0,n=BY[id].n;
+ if(!q)return small?`<button class="plus" data-act="inc" aria-label="加入購物車：${n}">+</button>`:`<button class="chip add" data-act="inc">加入購物車</button>`;
+ return `<div class="qs"><button data-act="dec" aria-label="${n}減少一份">−</button><span aria-label="${n}共 ${q} 份">${q}</span><button data-act="inc" aria-label="${n}增加一份">+</button></div>`};
+function paint(){
+ const a=document.activeElement,fa=a&&a.dataset&&a.dataset.act,fb=a&&a.closest&&a.closest('[data-id]'),fid=fb&&fb.dataset.id,inSheet=a&&a.closest&&!!a.closest('#sheet');
+ document.querySelectorAll('.buy[data-id]').forEach(b=>{b.innerHTML=buyHTML(b.dataset.id,!!b.closest('.item'))});
+ document.querySelectorAll('.item[data-item]').forEach(r=>r.classList.toggle('on',(cart[r.dataset.item]||0)>0));
+ const c=calc(),bar=$('#cartbar');
+ bar.hidden=!c.count;document.documentElement.classList.toggle('has-cart',c.count>0);
+ $('#cbN').textContent=c.count;$('#cbT').textContent=money(c.total);
+ $('#cbS').textContent=c.disc?`套餐已折 ${money(c.disc)}`:'';
+ bar.setAttribute('aria-label',`查看購物車，${c.count} 件，合計 ${money(c.total)}`);
+ if(!$('#sheet').hidden)drawSheet();
+ if(fid){const sel=inSheet?'#sheet ':'';const t=document.querySelector(`${sel}[data-id="${fid}"] [data-act="${fa}"]`)||document.querySelector(`${sel}[data-id="${fid}"] [data-act]`);if(t)t.focus({preventScroll:true});else if(inSheet)$('#sheet .x').focus()}
+}
+function fly(src){
+ if(reduce||!src||!src.width)return;
+ const s=src,t=$('#cbIcon').getBoundingClientRect();
+ if(!t.width)return;
+ const d=document.createElement('span');d.className='fly';d.style.left=(s.left+s.width/2)+'px';d.style.top=(s.top+s.height/2)+'px';document.body.appendChild(d);
+ const dx=t.left+t.width/2-(s.left+s.width/2),dy=t.top+t.height/2-(s.top+s.height/2);
+ const an=d.animate([{transform:'translate(0,0) scale(1)'},{transform:`translate(${dx*.5}px,${dy*.5-120}px) scale(1.2)`,offset:.45},{transform:`translate(${dx}px,${dy}px) scale(.5)`}],{duration:650,easing:'cubic-bezier(.4,0,.6,1)'});
+ an.onfinish=()=>{d.remove();const b=$('#cartbar');b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')};
+}
+function setQty(id,q,src){
+ const was=cart[id]||0,r=src&&src.getBoundingClientRect();q=Math.max(0,Math.min(99,q));
+ if(q)cart[id]=q;else delete cart[id];
+ save();paint();
+ if(q>was){requestAnimationFrame(()=>fly(r));$('#live').textContent=`已加入 ${BY[id].n}，共 ${q} 份`}
+ else $('#live').textContent=q?`${BY[id].n} 剩 ${q} 份`:`已移除 ${BY[id].n}`;
+}
+document.addEventListener('click',e=>{
+ const b=e.target.closest('[data-act]');if(!b)return;
+ const h=b.closest('[data-id]');if(!h)return;const id=h.dataset.id,q=cart[id]||0;
+ if(b.dataset.act==='inc')setQty(id,q+1,b);
+ if(b.dataset.act==='dec')setQty(id,q-1,b);
 });
+$('#comboAdd').addEventListener('click',e=>{
+ const t=T[pick.t],s=SIDES.find(x=>x.id===pick.s);
+ cart[t.id]=Math.min(99,(cart[t.id]||0)+1);if(s)cart[s.id]=Math.min(99,(cart[s.id]||0)+1);
+ const r=e.currentTarget.getBoundingClientRect();save();paint();requestAnimationFrame(()=>fly(r));
+ const msg=`已加入 ${t.n}${s?'＋'+s.n:''}`;$('#comboNote').textContent=msg;$('#live').textContent=msg;
+});
+
+// sheet
+let view='cart',clearArm=false,opener=null;
+const thumb=l=>l.k==='t'?`<img src="img/${l.id}.webp" alt="">`:(l.soup
+ ?`<svg viewBox="0 0 120 100" aria-hidden="true"><ellipse cx="60" cy="40" rx="52" ry="12" fill="${l.c}"/><path d="M6 40h108c0 30-24 50-54 50S6 70 6 40z" fill="#fff"/></svg>`
+ :`<svg viewBox="0 0 100 150" aria-hidden="true"><path d="M14 30h72l-9 112a8 8 0 0 1-8 7H31a8 8 0 0 1-8-7z" fill="#fff"/><path d="M20 52h60l-7 88a5 5 0 0 1-5 4H32a5 5 0 0 1-5-4z" fill="${l.c}"/>${l.pearl?'<g fill="#2a1a12"><circle cx="40" cy="132" r="6"/><circle cx="55" cy="134" r="6"/><circle cx="48" cy="121" r="6"/></g>':''}<rect x="8" y="22" width="84" height="12" rx="6" fill="#eef35b"/></svg>`);
+const pin='<svg viewBox="0 0 24 32" aria-hidden="true"><path d="M12 0C5.4 0 0 5.3 0 11.9 0 20.8 12 32 12 32s12-11.2 12-20.1C24 5.3 18.6 0 12 0zm0 16.5a4.6 4.6 0 1 1 0-9.2 4.6 4.6 0 0 1 0 9.2z"/></svg>';
+function orderText(c){
+ return ['EGG CRUSH 厚蛋俱樂部 點餐內容',...c.lines.map(l=>`${l.n} ×${l.q}　${money(l.sum)}`),...(c.disc?[`套餐折抵（${c.pairs} 組）　−${money(c.disc)}`]:[]),`合計　${money(c.total)}`,'請至微風廣場 GF 樓櫃位結帳'].join('\n');
+}
+function drawSheet(){
+ const c=calc(),body=$('#pbody'),foot=$('#pfoot');
+ if(!c.count)view='cart';
+ $('#shH').innerHTML=view==='pay'?'到櫃位結帳':`購物車<small>${c.count} 件</small>`;
+ if(!c.count){
+  body.innerHTML=`<div class="empty-c"><div class="bw"><div class="box"><b>EGG<br>CRUSH</b></div></div><p>購物車還是空的</p><small>挑一份厚吐司，再配杯飲料吧</small></div>`;
+  foot.innerHTML=`<a class="btn y" href="#toast" data-close>去看吐司</a>`;return;
+ }
+ if(view==='cart'){
+  let nudge='';
+  if(c.nt>c.ns)nudge=`<div class="nudge"><span>再加 ${c.nt-c.ns} 杯飲料或湯品，可以再折 ${money((c.nt-c.ns)*10)}</span><a href="#sides" data-close>去選</a></div>`;
+  else if(c.ns>c.nt)nudge=`<div class="nudge"><span>再加 ${c.ns-c.nt} 份吐司，可以再折 ${money((c.ns-c.nt)*10)}</span><a href="#toast" data-close>去選</a></div>`;
+  body.innerHTML=c.lines.map(l=>`<div class="pline"><div class="th">${thumb(l)}</div><div class="ln">${l.n}<small>${money(l.p)} / 份</small></div><div class="lt">${money(l.sum)}</div><div class="buy" data-id="${l.id}">${buyHTML(l.id)}</div></div>`).join('')+
+   `<div class="bill"><div><span>小計</span><span>${money(c.sub)}</span></div>${c.disc?`<div class="dc"><span>套餐折抵（${c.pairs} 組吐司配飲料或湯品）</span><span>−${money(c.disc)}</span></div>`:''}<div class="tt"><span>合計</span><span>${money(c.total)}</span></div></div>${nudge}`;
+  foot.innerHTML=`<button class="btn o" id="clr">${clearArm?'確定清空':'清空'}</button><button class="btn y" id="toPay">前往結帳 ${money(c.total)}</button>`;
+ }else{
+  body.innerHTML=`<div class="pay"><h3>請到櫃位結帳</h3>
+   <div class="where">${pin}<div><b>微風廣場 GF 樓</b><span>EGG CRUSH 厚蛋俱樂部 櫃位</span></div></div>
+   <ol class="steps"><li>到櫃位，把這個畫面給店員看</li><li>店員確認餐點後，在櫃位結帳</li></ol>
+   <div class="receipt"><h4>EGG CRUSH ORDER</h4>${c.lines.map(l=>`<div><span>${l.n} × ${l.q}</span><span>${money(l.sum)}</span></div>`).join('')}${c.disc?`<div><span>套餐折抵（${c.pairs} 組）</span><span>−${money(c.disc)}</span></div>`:''}<div class="rt"><span>合計</span><span>${money(c.total)}</span></div></div>
+   <p class="fine">這個頁面不會送出訂單，餐點與金額以櫃位結帳為準。</p><p class="fine" id="cpNote"></p></div>`;
+  foot.innerHTML=`<button class="btn o" id="back">返回修改</button><button class="btn y" id="cp">複製點餐內容</button>`;
+ }
+}
+function openSheet(v){
+ view=v||'cart';clearArm=false;opener=document.activeElement;
+ $('#sheet').hidden=false;document.documentElement.classList.add('lock');drawSheet();
+ requestAnimationFrame(()=>$('#sheet .x').focus());
+}
+function closeSheet(){
+ $('#sheet').hidden=true;document.documentElement.classList.remove('lock');
+ if(opener&&opener.isConnected)opener.focus({preventScroll:true});
+}
+$('#cartbar').addEventListener('click',()=>openSheet('cart'));
+$('#sheet').addEventListener('click',async e=>{
+ const cl=e.target.closest('[data-close]');
+ if(cl){const h=cl.getAttribute('href');if(h){e.preventDefault();closeSheet();document.querySelector(h).scrollIntoView({behavior:reduce?'auto':'smooth'})}else closeSheet();return}
+ if(e.target.closest('#toPay')){view='pay';drawSheet();$('#pbody').scrollTop=0;$('#back').focus();return}
+ if(e.target.closest('#back')){view='cart';drawSheet();$('#toPay').focus();return}
+ if(e.target.closest('#clr')){if(clearArm){cart={};save();clearArm=false;paint();$('#live').textContent='購物車已清空'}else{clearArm=true;drawSheet();$('#clr').focus()}return}
+ if(e.target.closest('#cp')){const t=orderText(calc());try{await navigator.clipboard.writeText(t);$('#cpNote').textContent='已複製，可以貼給一起點餐的朋友'}catch(err){$('#cpNote').textContent='這個瀏覽器不能自動複製，可以直接截圖這個畫面'}}
+});
+document.addEventListener('keydown',e=>{
+ if($('#sheet').hidden)return;
+ if(e.key==='Escape'){closeSheet();return}
+ if(e.key==='Tab'){const f=[...$('#sheet .panel').querySelectorAll('button,a[href]')].filter(x=>x.offsetParent);if(!f.length)return;const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}
+});
+paint();
 
 // active nav link
 $('#mini').addEventListener('click',()=>document.querySelector('.tray').scrollIntoView({behavior:reduce?'auto':'smooth',block:'center'}));
